@@ -1,6 +1,11 @@
 from flask import Flask, request, jsonify
 from flask import render_template
+from dotenv import load_dotenv
 import requests
+import os
+
+load_dotenv()
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -10,7 +15,7 @@ def home():
 @app.route('/weather', methods=['GET'])
 def get_weather():
     city = request.args.get('city') #because we are using GET method
-    api_key = "ac64e71009e31d2bd813d6e308c14138"
+    api_key = os.getenv("API_KEY")
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={api_key}"
     response = requests.get(url)
     if response.status_code == 200:
