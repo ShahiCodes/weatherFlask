@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #87ceeb, #f0f8ff);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .card {
+            background: white;
+            max-width: 350px;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #333;
+        }
+        .temp {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff4500;
+            margin: 15px 0;
+        }
+        .description {
+            text-transform: capitalize;
+            color: #555;
+            font-size: 1.2rem;
+        }
+        .details {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            background: #007BFF;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>{{ weather_data.city }}</h2>
+        <div class="temp">{{ weather_data.temperature }}°C</div>
+        <div class="description">{{ weather_data.weather }}</div>
+
+        <div class="details">
+            <p><strong>Feels Like:</strong> {{ weather_data.feelsLike }}°C</p>
+            <p><strong>Humidity:</strong> {{ weather_data.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ weather_data.windSpeed }} km/h</p>
+            <p><strong>Coordinates:</strong> {{ weather_data.coordinate.lat }}, {{ weather_data.coordinate.lon }}</p>
+        </div>
+
+        <a href="/">Search Again</a>
+    </div>
+
+</body>
+</html>
