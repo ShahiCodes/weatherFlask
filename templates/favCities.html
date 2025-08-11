@@ -49,6 +49,21 @@
             background: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
         }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -57,6 +72,9 @@
         {% for city in cities %}
             <div class="city-item">{{ city }}</div>
         {% endfor %}
+
+        <a href="/">Home Page</a>
     </div>
+
 </body>
 </html>

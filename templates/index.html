@@ -12,19 +12,15 @@
             min-height: 100vh;
             color: white;
             text-align: center;
-
-            /* Center everything */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Flex container for both cards */
         .main-container {
             display: flex;
             gap: 20px;
         }
-
 
         .container {
             text-align: center;
@@ -103,6 +99,7 @@
 <body>
 
     <div class="main-container">
+        <!-- Weather Search -->
         <div class="container">
             <h1>🌤 Weather App</h1>
             <form method="GET" action="/weather">
@@ -112,6 +109,7 @@
             <p>Enter a city name to check the current weather</p>
         </div>
 
+        <!-- Favourites Section -->
         <div class="container">
             <h1>⭐ Favourite Cities</h1>
             <form method="POST" action="/setFav">
@@ -121,6 +119,10 @@
             <br>
             <form method="GET" action="/showFav">
                 <button type="submit">View Favourites</button>
+            </form>
+            <br>
+            <form method="GET" action="/weatherAll">
+                <button type="submit">🌎 Get All Cities Weather</button>
             </form>
         </div>
     </div>
