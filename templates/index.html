@@ -6,68 +6,137 @@
     <title>Weather App</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
-            height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+
+            /* Center everything */
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
+        /* Flex container for both cards */
+        .main-container {
+            display: flex;
+            gap: 20px;
+        }
+
+
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.15);
-            padding: 40px;
+            padding: 30px;
             border-radius: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            width: 320px;
         }
+
         h1 {
-            font-size: 2.5rem;
-            color: #fff;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            margin-bottom: 15px;
         }
+
         form {
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
         }
+
         input[type="text"] {
             padding: 12px;
             border: none;
             border-radius: 8px;
-            width: 250px;
             font-size: 1rem;
+            outline: none;
         }
+
         button {
-            padding: 12px 20px;
+            padding: 12px;
             border: none;
-            background-color: #ff7e5f;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
             color: white;
             font-size: 1rem;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
         button:hover {
-            background-color: #eb4d2f;
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
         }
+
         p {
-            color: #f5f5f5;
             font-size: 0.9rem;
-            margin-top: 15px;
+            margin-top: 10px;
+        }
+
+        /* Toast styles */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateX(100%); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🌤 Weather App</h1>
-        <form method="GET" action="/weather">
-            <input type="text" name="city" placeholder="Enter city" required>
-            <button type="submit">Get Weather</button>
-        </form>
-        <p>Enter a city name to check current weather</p>
+
+    <div class="main-container">
+        <div class="container">
+            <h1>🌤 Weather App</h1>
+            <form method="GET" action="/weather">
+                <input type="text" name="city" placeholder="Enter city" required>
+                <button type="submit">Get Weather</button>
+            </form>
+            <p>Enter a city name to check the current weather</p>
+        </div>
+
+        <div class="container">
+            <h1>⭐ Favourite Cities</h1>
+            <form method="POST" action="/setFav">
+                <input type="text" name="city" placeholder="Enter city" required>
+                <button type="submit">Add City</button>
+            </form>
+            <br>
+            <form method="GET" action="/showFav">
+                <button type="submit">View Favourites</button>
+            </form>
+        </div>
     </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast">{{ message }}</div>
+                <script>
+                    setTimeout(() => {
+                        document.querySelector('.toast').remove();
+                    }, 3000);
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
 </body>
 </html>

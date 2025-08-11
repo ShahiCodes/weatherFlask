@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favourite Cities</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+
+            /* Center everything */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .city-list {
+            display: inline-block;
+            text-align: left;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .city-item {
+            padding: 12px 18px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .city-item:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <h1>🌟 Favourite Cities</h1>
+    <div class="city-list">
+        {% for city in cities %}
+            <div class="city-item">{{ city }}</div>
+        {% endfor %}
+    </div>
+</body>
+</html>
