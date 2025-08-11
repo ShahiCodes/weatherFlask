@@ -11,7 +11,6 @@
             color: white;
             text-align: center;
 
-            /* Center everything */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,6 +35,9 @@
         }
 
         .city-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 12px 18px;
             margin: 8px 0;
             background: rgba(255, 255, 255, 0.25);
@@ -49,6 +51,23 @@
             background: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
         }
+
+        .delete-btn {
+            background: #ff4d4d;
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #e60000;
+            transform: scale(1.05);
+        }
+
         a {
             display: inline-block;
             margin-top: 20px;
@@ -67,14 +86,21 @@
     </style>
 </head>
 <body>
-    <h1>🌟 Favourite Cities</h1>
-    <div class="city-list">
-        {% for city in cities %}
-            <div class="city-item">{{ city }}</div>
-        {% endfor %}
+    <div>
+        <h1>🌟 Favourite Cities</h1>
+        <div class="city-list">
+            {% for city in cities %}
+                <div class="city-item">
+                    {{ city }}
+                    <form action="/deleteFav" method="POST" style="margin: 0;">
+                        <input type="hidden" name="city" value="{{ city }}">
+                        <button type="submit" class="delete-btn">✖</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
 
         <a href="/">Home Page</a>
     </div>
-
 </body>
 </html>

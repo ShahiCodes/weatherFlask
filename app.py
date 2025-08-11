@@ -47,6 +47,26 @@ def show_fav():
 
     return render_template('favCities.html', cities = fav_cities)
 
+@app.route('/deleteFav', methods=['POST'])
+def delete_fav():
+    cityName = request.form.get('city')
+    
+    try:
+        with open(FAV_FILE, 'r') as f:
+            favourites = json.load(f)
+    except FileNotFoundError:
+        favourites = []
+
+    if cityName in favourites:
+        favourites.remove(cityName)
+        with open(FAV_FILE, 'w') as f:
+            json.dump(favourites, f, indent=2)
+        flash(f"{cityName} has been removed from your favourites")
+    else:
+        flash(f"{cityName} is not in your favourites")
+    
+    return redirect(url_for("show_fav"))
+
 
 @app.route('/weather', methods=['GET'])
 def get_weather():
