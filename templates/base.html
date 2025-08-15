@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}🌤 Weather App{% endblock %}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Navbar styling */
+        nav {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            margin: 0 12px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        main {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This can inherit itself to other HTML files and we dont need to create Navbar everytime -->
+    <nav>
+        <div class="nav-brand">🌦 My Weather App</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/favourites">🌟 Favourites</a>
+            <a href="/weather_all">Get All Weather</a>
+        </div>
+    </nav>
+
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

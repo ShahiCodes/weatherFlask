@@ -34,7 +34,7 @@ def set_favourite():
     with open(FAV_FILE, 'w') as f:
         json.dump(favourites, f, indent=2)
     
-    flash(f"{cityName} is added to your favourite")
+    flash(f"{cityName} is added  Many Flask extensions expect you to put their settings in app.config.to your favourite")
     return redirect(url_for("home"))
 
 @app.route('/showFav', methods=['GET'])
@@ -50,7 +50,7 @@ def show_fav():
 @app.route('/deleteFav', methods=['POST'])
 def delete_fav():
     cityName = request.form.get('city')
-    
+    # Here we are vulnerable to CSRF attacks, FlaskWTF forms gives protection
     try:
         with open(FAV_FILE, 'r') as f:
             favourites = json.load(f)
