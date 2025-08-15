@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, flash, url_for, redirect
 from flask import render_template
 from dotenv import load_dotenv
+from config import Config
 import asyncio
 import aiohttp
 import requests
@@ -10,9 +11,10 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "super_secret_key_123" 
-API_KEY = os.getenv("API_KEY")
-API_URL = "http://api.openweathermap.org/data/2.5/weather"
+app.config.from_object(Config)
+app.secret_key = app.config['SECRET_KEY'] 
+API_KEY = app.config['API_KEY'] 
+API_URL = app.config['API_URL'] 
 
 FAV_FILE = 'favourite.json'
 
@@ -71,8 +73,7 @@ def delete_fav():
 @app.route('/weather', methods=['GET'])
 def get_weather():
     city = request.args.get('city') #because we are using GET method
-    api_key = API_KEY
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={api_key}"
+    url = f"{API_URL}?q={city}&units=metric&appid={API_KEY}"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
