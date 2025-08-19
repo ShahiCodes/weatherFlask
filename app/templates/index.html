@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌤 Weather App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            width: 320px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            color: white;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+        }
+
+        p {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* Toast styles */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Weather Search -->
+        <div class="container">
+            <h1>🌤 Weather App</h1>
+            <form method="GET" action="/weather">
+                <input type="text" name="city" placeholder="Enter city" required>
+                <button type="submit">Get Weather</button>
+            </form>
+            <p>Enter a city name to check the current weather</p>
+        </div>
+
+        <!-- Favourites Section -->
+        <div class="container">
+            <h1>⭐ Favourite Cities</h1>
+            <form method="POST" action="/setFav">
+                <input type="text" name="city" placeholder="Enter city" required>
+                <button type="submit">Add City</button>
+            </form>
+            <br>
+            <form method="GET" action="/showFav">
+                <button type="submit">View Favourites</button>
+            </form>
+            <br>
+            <form method="GET" action="/weatherAll">
+                <button type="submit">🌎 Get All Cities Weather</button>
+            </form>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast">{{ message }}</div>
+                <script>
+                    setTimeout(() => {
+                        document.querySelector('.toast').remove();
+                    }, 3000);
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+</body>
+</html>

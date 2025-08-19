@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #333;
+        }
+        .temp {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #ff7e5f;
+            margin: 15px 0;
+        }
+        .description {
+            text-transform: capitalize;
+            color: #555;
+            font-size: 1.1rem;
+        }
+        .details {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #444;
+        }
+        .details p {
+            margin: 6px 0;
+        }
+        a.back {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+        }
+        a.back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .back-container {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        {% for city in weather_data%}
+        <div class="card">
+            <h2>{{ city.city }}</h2>
+            <div class="temp">{{ city.temperature }}°C</div>
+            <div class="description">{{ city.weather }}</div>
+
+            <div class="details">
+                <p><strong>Feels Like:</strong> {{ city.feelsLike }}°C</p>
+                <p><strong>Humidity:</strong> {{ city.humidity }}%</p>
+                <p><strong>Wind Speed:</strong> {{ city.windSpeed }} km/h</p>
+                <p><strong>Coordinates:</strong> {{ city.coordinate.lat }}, {{ city.coordinate.lon }}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="back-container">
+            <a href="{{url_for('routes.home')}}" class="back">Search Again</a>
+        </div>
+    </div>
+
+</body>
+</html>

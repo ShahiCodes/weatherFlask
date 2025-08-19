@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            max-width: 380px;
+            width: 90%;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: #333;
+        }
+        .temp {
+            font-size: 3.2rem;
+            font-weight: bold;
+            color: #ff7e5f;
+            margin: 15px 0;
+        }
+        .description {
+            text-transform: capitalize;
+            color: #555;
+            font-size: 1.2rem;
+        }
+        .details {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #444;
+        }
+        .details p {
+            margin: 6px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>{{ weather_data.city }}</h2>
+        <div class="temp">{{ weather_data.temperature }}°C</div>
+        <div class="description">{{ weather_data.weather }}</div>
+
+        <div class="details">
+            <p><strong>Feels Like:</strong> {{ weather_data.feelsLike }}°C</p>
+            <p><strong>Humidity:</strong> {{ weather_data.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ weather_data.windSpeed }} km/h</p>
+            <p><strong>Coordinates:</strong> {{ weather_data.coordinate.lat }}, {{ weather_data.coordinate.lon }}</p>
+        </div>
+
+        <a href="{{url_for('routes.home')}}">Search Again</a>
+    </div>
+
+</body>
+</html>
