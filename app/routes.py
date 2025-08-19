@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template, flash, redirect, url_for
-import asyncio, aiohttp, requests, json, os
+import asyncio, aiohttp, requests
+from sqlalchemy import func
+from sqlalchemy.exc import IntegrityError
 from app import db
 from app.models import FavouriteCities
 
@@ -13,48 +15,54 @@ def home():
 
 @bp.route("/setFav", methods=["POST"])
 def set_favourite():
-    cityName = request.form.get("city")
-    
-    try:
-        with open(FAV_FILE, "r") as f:
-            favourites = json.load(f)
-    except FileNotFoundError:
-        favourites = []
-
-    if any(fav.lower() == cityName.lower() for fav in favourites):
-        flash(f"{cityName} is already in your favourite")
+    raw_city = (request.form.get("city") or "").strip()
+    if not raw_city:
+        flash("Please enter a city name.")
         return redirect(url_for("routes.home"))
 
-    favourites.append(cityName)
-    with open(FAV_FILE, "w") as f:
-        json.dump(favourites, f, indent=2)
+    city_name = raw_city.title()
+    # 
+    existing = FavouriteCities.query.filter(
+        func.lower(FavouriteCities.name) == city_name.lower()
+    ).first()
     
-    flash(f"{cityName} is added to your favourites")
+    if existing:
+        flash(f"{city_name} is already in your favourities")
+        return redirect(url_for("routes.home"))
+    
+    db.session.add(FavouriteCities(name=city_name)) 
+    
+    try:
+        db.session.commit()
+        flash(f"{city_name} is added to your favourites")
+    except IntegrityError:
+        db.session.rollback()
+        flash(f"{city_name} already exists") 
+    
     return redirect(url_for("routes.home"))
+    
 
 @bp.route("/showFav", methods=["GET"])
 def show_fav():
-    try:
-        with open(FAV_FILE, "r") as f:
-            fav_cities = json.load(f)
-    except FileNotFoundError:
-        fav_cities = []
-    return render_template("favCities.html", cities=fav_cities)
+    fav_cities = FavouriteCities.query.order_by(FavouriteCities.name).all()
+    return render_template("favCities.html", cities=[c.name for c in fav_cities])
 
 @bp.route("/deleteFav", methods=["POST"])
 def delete_fav():
     cityName = request.form.get("city")
-    try:
-        with open(FAV_FILE, "r") as f:
-            favourites = json.load(f)
-    except FileNotFoundError:
-        favourites = []
-
-    if cityName in favourites:
-        favourites.remove(cityName)
-        with open(FAV_FILE, "w") as f:
-            json.dump(favourites, f, indent=2)
+    
+    fav_city = FavouriteCities.query.filter(
+        FavouriteCities.name.ilike(cityName)
+    ).first()
+    
+    if fav_city:
+        db.session.delete(fav_city)
+        db.session.commit()
         flash(f"{cityName} has been removed from your favourites")
+        #Important Note
+        # fav_city is not just raw data — it’s a "Python object" mapped 
+        # to the row in favourite_cities table. This is why we dont need to 
+        # mention the table name while writing delete
     else:
         flash(f"{cityName} is not in your favourites")
     
@@ -110,11 +118,8 @@ def weather_all():
     API_KEY = Config.API_KEY
     API_URL = Config.API_URL
 
-    try:
-        with open(FAV_FILE, "r") as f:
-            favourites = json.load(f)
-    except FileNotFoundError:
-        favourites = []
+    favourites = [fav.name for fav in FavouriteCities.query.all()]
+    
 
     results = asyncio.run(get_all_weather(favourites, API_URL, API_KEY))
 
